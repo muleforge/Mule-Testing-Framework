@@ -5,7 +5,7 @@
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
-package org.mule.module.mtf;
+package org.mule.tool.mtf;
 
 import org.mule.api.MuleMessage;
 import org.mule.module.client.MuleClient;
