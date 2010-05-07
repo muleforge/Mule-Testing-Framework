@@ -42,12 +42,16 @@ public class Mule221Adaptor implements Device{
 				client = new MuleClient(muleContext);
 			}catch(Exception ex){
 				String message = "Failed to properly initialize MuleClient: "+ex.getMessage(); 
-				throw new RuntimeException(message);
+				log.error(message);
 			}
-		
 	}
 
 	public boolean isRunning() {
+		if(muleContext == null){
+			log.warn("Mule server was not properly initialized.  Cannot determine its state.");
+			return false;
+		}
+
 		return muleContext.isStarted();
 	}
 
@@ -56,6 +60,11 @@ public class Mule221Adaptor implements Device{
 	}
 
 	public void start() {
+		if(muleContext == null){
+			log.warn("Mule server was not properly initialized.  Cannot start it.");
+			return;
+		}
+
 		try {
 			muleContext.start();
 		} catch (MuleException e) {
@@ -64,6 +73,11 @@ public class Mule221Adaptor implements Device{
 	}
 
 	public void stop() {
+		if(muleContext == null){
+			log.warn("Mule server was not properly initialized.  Cannot stop it.");
+			return;
+		}
+		
 		try {
 			muleContext.stop();
 		} catch (MuleException e) {
@@ -72,11 +86,20 @@ public class Mule221Adaptor implements Device{
 	}
 
 	public void dispose() {
+		if(muleContext == null){
+			log.warn("Mule server was not properly initialized.  Cannot dispose of it.");
+			return;
+		}
+
 		muleContext.dispose();
 		muleContext=null;
 	}
 
 	public Object getDevice() {
+		if(client == null){
+			log.warn("Mule was not properly initialized, client is null");
+		}
+		
 		return client;
 	}
 

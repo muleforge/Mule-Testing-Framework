@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TODO: Bring in the jdbc and stdio namespace and schema location -->
+<mule xmlns="http://www.mulesource.org/schema/mule/core/2.2"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:spring="http://www.springframework.org/schema/beans"
+       xmlns:jdbc="http://www.mulesource.org/schema/mule/jdbc/2.2"
+       xmlns:stdio="http://www.mulesource.org/schema/mule/stdio/2.2"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.mulesource.org/schema/mule/core/2.2
+       http://www.mulesource.org/schema/mule/core/2.2/mule.xsd
+       http://www.mulesource.org/schema/mule/stdio/2.2
+       http://www.mulesource.org/schema/mule/stdio/2.2/mule-stdio.xsd
+       http://www.mulesource.org/schema/mule/jdbc/2.2
+       http://www.mulesource.org/schema/mule/jdbc/2.2/mule-jdbc.xsd">
+
+<description>JDBC Select - connector polling database, printing record, and updating record so it does not get selected again</description>
+
+<!-- TODO: Create a Spring Bean with an id of airlineDb and a class of "org.springframework.jdbc.datasource.DriverManagerDataSource" -->
+<!-- TODO: It's spring properties should be (hint: 'spring:property') -->
+<!-- TODO:    name=driverClassName, value=org.hsqldb.jdbcDriver -->
+<!-- TODO:    name=url, value=jdbc:hsqldb:hsql://localhost/xdb -->
+<!-- TODO:    name=username, value=sa -->
+<!-- TODO:    name=password, value='' (ie: no value) -->
+<spring:bean id="airlineDB" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<spring:property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
+	<spring:property name="url" value="jdbc:hsqldb:hsql://localhost/xdb"/>
+	<spring:property name="username" value="sa"/>
+	<spring:property name="password" value=""/>
+</spring:bean>
+
+<!-- TODO: Create a JDBC connector with a name=flight, dataSource-ref=airlineDB, and a pollingFrequency=5000 -->
+<jdbc:connector 
+	name="flight"
+	dataSource-ref="airlineDB"
+	pollingFrequency="5000">
+
+<!-- TODO: Create a jdbc:query with a key of 'getDepartedFlight' -->
+<!-- TODO: The value ('query') should  select flight_id, date, flight_nbr, orig, dest, departed from flight where departed = 1 -->
+<jdbc:query key="getDepartedFlight"
+	value="select flight_id, date, flight_nbr, orig, dest, departed from flight where departed = 1"/>
+	
+<!-- TODO: Create a jdbc:query which 'Acknowledges' with a key of 'getDepartedFlight.ack' -->
+<!-- TODO: The value ('query') should  update flight set departed = 2 where flight_id = #[map-payload:flight_id] -->
+<!-- NOTE: This query leverages Mule expressions.  Here, we are accessing the message (a hash) and getting the key for our query.  -->
+<jdbc:query key="getDepartedFlight.ack"
+	value="update flight set departed = 2 where flight_id = #[map-payload:flight_id]"/>
+
+<!-- TODO: End the JDBC Connector -->
+</jdbc:connector>
+
+<model name="JdbcModel">
+	<service name="JdbcService">
+		<inbound>
+<!-- TODO: Create an inbound JDBC endpoint where the queryKey references getDepartedFlight (our select query) -->		
+			<jdbc:inbound-endpoint queryKey="getDepartedFlight" />
+		</inbound>
+<!-- TODO: Create a log component which shows our records in the log -->        
+		<log-component/>
+	</service>
+</model>
+
+</mule>
