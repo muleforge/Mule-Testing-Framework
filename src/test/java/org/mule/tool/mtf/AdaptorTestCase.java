@@ -18,6 +18,7 @@ import com.icegreen.greenmail.util.GreenMailUtil;
 
 public class AdaptorTestCase {
 
+
 	@Test
 	public void greenMailAdaptor(){
 		Device adaptor = new MailServerAdaptor("james","james");
@@ -37,19 +38,19 @@ public class AdaptorTestCase {
 	
 	@Test
 	public void apacheFtpServer(){
-		Device adaptor = new FTPServerAdaptor("./data/ftp",1025);
+		Device adaptor = new FTPServerAdaptor(MTFConstants.FTP_DATA_DIR,MTFConstants.FTP_USERS,MTFConstants.FTP_PORT);
 		excerciseInProcessAdaptor(adaptor);
 	}
 	
 	@Test
 	public void activeMqAdaptor() {
-		Device adaptor = new ActiveMqAdaptor("tcp://localhost:61616");
+		Device adaptor = new ActiveMqAdaptor(MTFConstants.ACTIVE_MQ_URL,MTFConstants.ACTIVE_MQ_DATA_DIR);
 		excerciseInProcessAdaptor(adaptor);
 	}
 
 	@Test
 	public void muleAdaptor221(){
-		String muleConfig =	"src/test/resources/quartz/mule2x-quartz.xml";
+		String muleConfig =	MTFConstants.RESOURCE_DIR+"/mule2x-empty.xml";
 		Mule221Adaptor adaptor = new Mule221Adaptor(muleConfig);
 		excerciseInProcessAdaptor(adaptor);
 	}
@@ -62,7 +63,7 @@ public class AdaptorTestCase {
 	
 	@Test
 	public void remoteLogAdaptor(){
-		RemoteLogAdaptor adaptor = new RemoteLogAdaptor(4000);
+		RemoteLogAdaptor adaptor = new RemoteLogAdaptor(MTFConstants.REMOTE_LOG4J_PORT);
 		excerciseInProcessAdaptor(adaptor);
 	}
 	

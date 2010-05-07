@@ -11,10 +11,14 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
-public class TestFileUtility {
+public class FileUtility {
 
-	private static Logger log =  Logger.getLogger(TestFileUtility.class);
+	private static Logger log =  Logger.getLogger(FileUtility.class);
 
+	public static boolean createDirectory(String dirToCreate){
+		return (new File(dirToCreate)).mkdirs();
+	}
+	
 	public static void createFlightFile(){
 		File newFile = new File("data/flight-load/flights.dat");
 		Writer out;
@@ -51,6 +55,9 @@ public class TestFileUtility {
 	public static void validateFileAndCleanup(String directoryToCheck, int expectedFileCount){
 			File dir = new File(directoryToCheck);
 			File[] files = dir.listFiles();
+			
+			assertNotNull("Invalid directory?  No files found at: "+directoryToCheck,files);
+			
 			int fileCount = files.length;
 			for(int i=0;i<files.length;i++){
 				log.info("Cleaning up file from test: "+files[i].getName());

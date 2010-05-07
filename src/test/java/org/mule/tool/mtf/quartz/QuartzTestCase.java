@@ -7,16 +7,18 @@ import org.mule.tool.mtf.AbstractMule221Test;
 import org.mule.tool.mtf.logging.LoggingAssertions;
 import org.mule.tool.mtf.logging.MessageKey;
 
-public class TestQuartz extends AbstractMule221Test {
+public class QuartzTestCase extends AbstractMule221Test {
 	
+	private static final String RESOURCE_DIR = "src/test/resources";
+
 	@BeforeClass
 	public static void globalSetup(){
-		addLocalMuleService("mule", "resources/mule2x-quartz.xml");
+		addLocalMuleService("mule", RESOURCE_DIR+"/quartz/mule2x-quartz.xml");
 	}
 	
 	@Override
 	public void initializeLogging() {
-		logger = Logger.getLogger(TestQuartz.class);
+		logger = Logger.getLogger(QuartzTestCase.class);
 	}
 	
 	@Test

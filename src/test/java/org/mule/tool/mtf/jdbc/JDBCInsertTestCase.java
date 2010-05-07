@@ -15,33 +15,37 @@ import org.mule.tool.mtf.database.HsqlJDBCAdaptor;
 
 import static org.junit.Assert.*;
 
-public class TestJdbcInsert extends AbstractMule221Test{
+public class JDBCInsertTestCase extends AbstractMule221Test{
 
 	private static DatabaseModel dbModel = new FlightDatabaseModel();
 	private static DatabaseUtility dbUtil = null;
 	
 	@BeforeClass
 	public static void globalSetup() throws Exception{
+		
 		// Start database
 		manager.addDevice("hsql", new HsqlAdaptor(dbModel));
 		
+		// Start Active MQ
 		addJmsDevice();
 
+		// Will create the database and setup data
 		dbUtil = new DatabaseUtility(new HsqlJDBCAdaptor(dbModel),dbModel); 
-		
-		addLocalMuleService("mule", "resources/mule2x-jdbc-insert.xml");
+
+		// Start Mule service which will handle JMS messages and create db records from them
+		addLocalMuleService("mule", "src/test/resources/jdbc/mule2x-jdbc-insert.xml");
 	}
 	
 	@Override
 	public void initializeLogging() {
-		logger = Logger.getLogger(TestJdbcInsert.class);
+		logger = Logger.getLogger(JDBCInsertTestCase.class);
 	}
 	
 	@Test
 	public void flightInsertionViaJMS(){
 		
-		sendJMSFlightCreationRequest(1);
-		sendJMSFlightCreationRequest(2);
+		sendJMSFlightCreationRequest(5);
+		sendJMSFlightCreationRequest(6);
 				
 		// Wait
 		try {
@@ -52,7 +56,7 @@ public class TestJdbcInsert extends AbstractMule221Test{
 		
 		// Validate record creation
 		assertEquals("Expected two records created from JMS messages",2,
-				dbUtil.getCountFor(dbModel.getQuery("FlownCount")));
+				dbUtil.getCountFor(dbModel.getQuery(FlightDatabaseModel.NEW_FLIGHTS)));
 	}
 
 	private void sendJMSFlightCreationRequest(int flightId){

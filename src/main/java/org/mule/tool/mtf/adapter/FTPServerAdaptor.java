@@ -17,15 +17,26 @@ import org.apache.ftpserver.ftplet.FtpException;
 import org.apache.ftpserver.listener.ListenerFactory;
 import org.apache.ftpserver.usermanager.ClearTextPasswordEncryptor;
 import org.apache.ftpserver.usermanager.PropertiesUserManagerFactory;
+import org.apache.log4j.Logger;
 import org.mule.api.mtf.Device;
+import org.mule.tool.mtf.file.FileUtility;
 
 public class FTPServerAdaptor implements Device{
 
+	private Logger log = Logger.getLogger(FTPServerAdaptor.class);
+	
 	private FtpServer device = null;
 	private int port;
+	private String userPropertiesFile;
 	
-	public FTPServerAdaptor(String rootDir, int port){
-		this.port = port;
+	public FTPServerAdaptor(String rootDir, String userPropertiesFile, int port){
+		this.port               = port;
+		this.userPropertiesFile = userPropertiesFile;
+		
+		// Ensure the creation of the FTP's root directory
+		if(! FileUtility.createDirectory(rootDir)){
+			log.error("Failed to create FTP root directory: "+rootDir);
+		}
 	}
 	
 	public void initialize() {
@@ -38,7 +49,7 @@ public class FTPServerAdaptor implements Device{
 		
 		// Setup test user
 		PropertiesUserManagerFactory userManagerFactory = new PropertiesUserManagerFactory();
-		userManagerFactory.setFile(new File("ftpserver.users.properties"));
+		userManagerFactory.setFile(new File(userPropertiesFile));
 		userManagerFactory.setPasswordEncryptor(new ClearTextPasswordEncryptor());
 		serverFactory.setUserManager(userManagerFactory.createUserManager());
 		

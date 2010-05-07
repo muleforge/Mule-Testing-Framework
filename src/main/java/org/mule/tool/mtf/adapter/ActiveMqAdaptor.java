@@ -19,15 +19,18 @@ public class ActiveMqAdaptor implements Device{
 	private BrokerService activeMq = null;
 	private Logger log = Logger.getLogger(ActiveMqAdaptor.class);
 	private String hostPort;
+	private String dataDirectory;
 	
-	public ActiveMqAdaptor(String hostPort){
+	public ActiveMqAdaptor(String hostPort,String dataDirectory){
 		this.hostPort = hostPort;
+		this.dataDirectory=dataDirectory;
 	}
 	
 	public void initialize() {
 		try {
 			activeMq = new BrokerService();
 			activeMq.addConnector(hostPort);
+			activeMq.setDataDirectory(this.dataDirectory);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -15,7 +15,7 @@ import org.mule.tool.mtf.logging.MessageKey;
 
 import static org.junit.Assert.*;
 
-public class TestJdbcSelect extends AbstractMule221Test{
+public class JDBCSelectTestCase extends AbstractMule221Test{
 
 	private static DatabaseModel dbModel = new FlightDatabaseModel(); 
 	private static DatabaseUtility dbUtil = null;
@@ -26,7 +26,7 @@ public class TestJdbcSelect extends AbstractMule221Test{
 
 		dbUtil = new DatabaseUtility(new HsqlJDBCAdaptor(dbModel),dbModel);
 		
-		addLocalMuleService("mule", "src/test/resources/jdbc/mule2x-jdbc-select.xml");
+		addLocalMuleService("mule", "jdbc/mule2x-jdbc-select.xml");
 	}
 	
 	@AfterClass
@@ -36,7 +36,7 @@ public class TestJdbcSelect extends AbstractMule221Test{
 	
 	@Override
 	public void initializeLogging() {
-		logger = Logger.getLogger(TestJdbcSelect.class);
+		logger = Logger.getLogger(JDBCSelectTestCase.class);
 	}
 	
 	@Test

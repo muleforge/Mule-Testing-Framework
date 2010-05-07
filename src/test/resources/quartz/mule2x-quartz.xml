@@ -56,13 +56,13 @@
 
 <!-- TODO: Create a Spring Bean with an id=PollingComponent which points to your PollingComponent class (full packeage name too) -->
 <!-- TODO: Use a spring property to set the message to some value (just ensure you include the text 'polling' somewhere in your string) -->
-<spring:bean id="PollingComponent" class="com.mule2x.quartz.PollingComponent">
+<spring:bean id="PollingComponent" class="org.mule.tool.mtf.quartz.PollingComponent">
 	<spring:property name="message" value="Hello, I was dispatched from a quartz connector (polling)"/>
 </spring:bean>
 
 <!-- TODO: Create a Spring Bean with an id=TimedComponent which points to your TimedComponent class (full packeage name too) -->
 <!-- TODO: Use a spring property to set the message to some value (just ensure you include the text 'timed' somewhere in your string) -->
-<spring:bean id="TimedComponent" class="com.mule2x.quartz.TimedComponent">
+<spring:bean id="TimedComponent" class="org.mule.tool.mtf.quartz.TimedComponent">
 	<spring:property name="message" value="Hello, I was dispatched from a quartz connector (timed)"/>
 </spring:bean>
 

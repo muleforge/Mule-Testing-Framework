@@ -11,9 +11,11 @@ public class FlightDatabaseModel implements DatabaseModel{
 	
 	// Constant refers to named query within Model
 	public static final String FLOWN_COUNT = "FlownCount";
+	public static final String NEW_FLIGHTS = "NewFlights";
 	
 	public FlightDatabaseModel(){
 		namedQueries.put("FlownCount", "select * from flight where departed = 2");
+		namedQueries.put("NewFlights", "select * from flight where flight_id > 4");
 	}
 
 	public String[] getInitialDataSqls() {
@@ -27,7 +29,8 @@ public class FlightDatabaseModel implements DatabaseModel{
 
 	public String[] getResetSqls() {
 		return new String[]{
-			"update flight set departed = 1 where flight_id in (1,2)"
+			"update flight set departed = 1 where flight_id in (1,2)",
+			"delete from flight where flight_id > 4"
 		};
 	}
 
@@ -55,7 +58,7 @@ public class FlightDatabaseModel implements DatabaseModel{
 	}
 
 	public String getDbDataPath() {
-		return "./flightdb";
+		return "./target/flightdb";
 	}
 
 	public String getDbName() {

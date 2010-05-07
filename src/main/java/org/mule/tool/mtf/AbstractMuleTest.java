@@ -45,12 +45,12 @@ public abstract class AbstractMuleTest {
 	}
 	
 	protected static void addJmsDevice(){
-		addDevice("activemq", new ActiveMqAdaptor("tcp://localhost:61616"));
+		addDevice("activemq", new ActiveMqAdaptor(MTFConstants.ACTIVE_MQ_URL,MTFConstants.ACTIVE_MQ_DATA_DIR));
 	}
 	
 	protected static void addRemoteLog4jListener(){
 		// Create a listener for remote logging from our mule container
-		manager.addDevice("log4j-receiver", new RemoteLogAdaptor(4000));
+		manager.addDevice("log4j-receiver", new RemoteLogAdaptor(MTFConstants.REMOTE_LOG4J_PORT));
 	}
 	
 	protected static Device addRemoteMuleService(final String alias,  final String configFile, RuntimeClasspath classpath){

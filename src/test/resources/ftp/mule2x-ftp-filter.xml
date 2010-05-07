@@ -18,6 +18,7 @@
 
 	<service name="ftpInboundService">
       <inbound>
+<!-- NOTE: This / path is the root of the FTP server after logging in. Not root of classpath -->	       
 	      <ftp:inbound-endpoint 
 			pollingFrequency="5000"		      	
 			user="admin" 
