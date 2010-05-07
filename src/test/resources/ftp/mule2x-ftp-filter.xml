@@ -34,7 +34,7 @@
 	      <pass-through-router>
 	         <file:outbound-endpoint 
 	           path="target/data/file"
-	           outputPattern="[header:originalFilename]"/>
+	           outputPattern="saved.txt"/>
 	      </pass-through-router>
       </outbound>
 	</service>
