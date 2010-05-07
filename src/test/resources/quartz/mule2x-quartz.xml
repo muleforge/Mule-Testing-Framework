@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- TODO: Create the proper namespace and schema locations for the Quartz transport -->
 <mule xmlns="http://www.mulesource.org/schema/mule/core/2.2"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:spring="http://www.springframework.org/schema/beans"
@@ -17,8 +16,6 @@
     <!-- This service will poll every 5 seconds -->
 	<service name="quartzCronServicePolling">
 		<inbound>
-<!-- TODO: Create an inbound quartz endpoint.  Give it a jobName and a repeatInterval of 5000 milliseconds (5 sec.)-->		
-	<!-- TODO: Use the quartz event generator job -->
 			<quartz:inbound-endpoint jobName="cron-job-polled" repeatInterval="5000">
 				<quartz:event-generator-job>
 					<!-- Bug in Mule keeps this from working properly, fixed in Mule 2.2.2 -->
@@ -26,7 +23,6 @@
 				</quartz:event-generator-job>
 			</quartz:inbound-endpoint>
 		</inbound>
-<!-- TODO: Create a component which references a spring bean named "PollingComponent" -->
 		<component>
 			<spring-object bean="PollingComponent"/>
 		</component>
@@ -36,14 +32,11 @@
 	<!-- Change this time to be something like a minute or two in the future -->
 	<service name="quartzCronServiceTimed">
 		<inbound>
-<!-- TODO: Create an inbound Quartz endpoint.  Star every field except second to have it fire every minute -->		
 			<!--  cronEx decoded:  second minute hour(24hr fmt) day-of-month month day-of-week -->
 			<quartz:inbound-endpoint jobName="cron-job-timed" cronExpression="0 * * * * ?">
 				<quartz:event-generator-job/>
 			</quartz:inbound-endpoint>
 		</inbound>
-<!-- TODO: Create a component which references a spring bean named "TimedComponent" -->
-<!-- TODO: Use method entry point resolution and include the method 'arbitraryMethod', which will be called when the cron expression fires -->		
 		<component>
 			<method-entry-point-resolver>
 				<include-entry-point method="arbitraryMethod"/>
@@ -54,14 +47,10 @@
 			
 </model>
 
-<!-- TODO: Create a Spring Bean with an id=PollingComponent which points to your PollingComponent class (full packeage name too) -->
-<!-- TODO: Use a spring property to set the message to some value (just ensure you include the text 'polling' somewhere in your string) -->
 <spring:bean id="PollingComponent" class="org.mule.tool.mtf.quartz.PollingComponent">
 	<spring:property name="message" value="Hello, I was dispatched from a quartz connector (polling)"/>
 </spring:bean>
 
-<!-- TODO: Create a Spring Bean with an id=TimedComponent which points to your TimedComponent class (full packeage name too) -->
-<!-- TODO: Use a spring property to set the message to some value (just ensure you include the text 'timed' somewhere in your string) -->
 <spring:bean id="TimedComponent" class="org.mule.tool.mtf.quartz.TimedComponent">
 	<spring:property name="message" value="Hello, I was dispatched from a quartz connector (timed)"/>
 </spring:bean>

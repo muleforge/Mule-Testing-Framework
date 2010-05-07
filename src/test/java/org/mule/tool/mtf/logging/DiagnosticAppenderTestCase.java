@@ -16,6 +16,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import org.mule.tool.mtf.DeviceManager;
+import org.mule.tool.mtf.MTFConstants;
 import org.mule.tool.mtf.adapter.RemoteLogAdaptor;
 import org.mule.tool.mtf.logging.MessageKey;
 
@@ -27,7 +28,7 @@ public class DiagnosticAppenderTestCase {
 	
 	@BeforeClass
 	public static void globalSetup(){
-		manager.addDevice("remote-log4j",new RemoteLogAdaptor(4000));
+		manager.addDevice("remote-log4j",new RemoteLogAdaptor(MTFConstants.REMOTE_LOG4J_PORT));
 		
 		// Give SocketAppender chance to reconnect to server that we just started.
 		sleep(2000);

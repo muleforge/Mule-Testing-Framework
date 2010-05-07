@@ -22,7 +22,7 @@
 <model name="JmsModel">
 	<service name="JMS With Component">
 		<inbound>
-			<jms:inbound-endpoint queue="JMS.MESSAGE.IN"  
+			<jms:inbound-endpoint queue="JMS.IN"  
 				transformer-refs="JMSMessageToObject StringToWrapper" connector-ref="JmsConnector">
 			</jms:inbound-endpoint>
 		</inbound>

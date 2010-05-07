@@ -44,7 +44,7 @@
 <model name="JdbcModel">
 	<service name="JdbcService">
 		<inbound>
-			<jms:inbound-endpoint queue="JMS.FLIGHT.IN"/>
+			<jms:inbound-endpoint queue="JMS.IN"/>
 		</inbound>
  		<outbound>
 			<pass-through-router>

@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.mule.api.MuleException;
 import org.mule.api.mtf.DatabaseModel;
 import org.mule.tool.mtf.AbstractMule221Test;
+import org.mule.tool.mtf.MTFConstants;
 import org.mule.tool.mtf.adapter.HsqlAdaptor;
 import org.mule.tool.mtf.database.DatabaseUtility;
 import org.mule.tool.mtf.database.HsqlJDBCAdaptor;
@@ -33,7 +34,7 @@ public class JDBCInsertTestCase extends AbstractMule221Test{
 		dbUtil = new DatabaseUtility(new HsqlJDBCAdaptor(dbModel),dbModel); 
 
 		// Start Mule service which will handle JMS messages and create db records from them
-		addLocalMuleService("mule", "src/test/resources/jdbc/mule2x-jdbc-insert.xml");
+		addLocalMuleService("mule", MTFConstants.RESOURCE_DIR+"/jdbc/mule2x-jdbc-insert.xml");
 	}
 	
 	@Override
@@ -70,7 +71,7 @@ public class JDBCInsertTestCase extends AbstractMule221Test{
 		
 		// Send messages
 		try {
-			client.dispatch("jms://JMS.FLIGHT.IN", mapMessage, null);
+			client.dispatch(MTFConstants.JMS_QUEUE, mapMessage, null);
 		} catch (MuleException e) {
 			e.printStackTrace();
 		}

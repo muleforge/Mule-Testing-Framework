@@ -7,6 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mule.api.MuleException;
 import org.mule.tool.mtf.AbstractMule221Test;
+import org.mule.tool.mtf.MTFConstants;
 import org.mule.tool.mtf.logging.LoggingAssertions;
 import org.mule.tool.mtf.logging.MessageKey;
 
@@ -15,7 +16,7 @@ public class JMSTestCase  extends AbstractMule221Test{
 	@BeforeClass
 	public static void globalSetup(){
 		addJmsDevice();
-		addLocalMuleService("mule","src/test/resources/jms/mule2x-jms.xml");
+		addLocalMuleService("mule",MTFConstants.RESOURCE_DIR+"/jms/mule2x-jms.xml");
 		
 	}
 
@@ -28,7 +29,7 @@ public class JMSTestCase  extends AbstractMule221Test{
 	public void sendJmsMessage() throws Exception{
 		try {
 			// Using the client, which belongs to AbstractMule221Test, to send a message to ActiveMq
-			client.dispatch("jms://JMS.MESSAGE.IN", "Here is another message", null);
+			client.dispatch(MTFConstants.JMS_QUEUE, "Here is another message", null);
 
 			
 		} catch (MuleException ex) {
