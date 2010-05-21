@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 	<name>Mule Mtf Module</name>
 	<version>1.0-SNAPSHOT</version>
-	<description>Mule Testing Framework</description>
+	<description>Mule Testing Framework - MTF</description>
 
 	<properties>
 		<mule.version>2.2.1</mule.version>
